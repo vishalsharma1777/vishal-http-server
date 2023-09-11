@@ -36,8 +36,10 @@ const requestListener = function (req, res) {
     const statusCodeMessage = http.STATUS_CODES[urlByParts[2]];
     if (!urlByParts[2]) {
       res.end('ENTER A CODE WHOSE RESPONSE YOU WANT TO SEE');
-    } else {
+    } else if (http.STATUS_CODES[urlByParts[2]]) {
       res.end(statusCodeMessage);
+    } else {
+      res.end('ENTER A VALID CODE');
     }
   }
 
