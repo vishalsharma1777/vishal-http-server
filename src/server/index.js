@@ -10,14 +10,14 @@ const requestListener = function (req, res) {
   if (req.url === '/html') {
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);
-    res.end(readData('src/client/index.html'));
+    res.end(readData('../client/index.html'));
   }
 
   //FOR JSON
   else if (req.url === '/json') {
     res.setHeader('Content-Type', 'json');
     res.writeHead(200);
-    res.end(readData('src/client/index.json'));
+    res.end(readData('../client/index.json'));
   }
 
   //FOR UUID
@@ -58,7 +58,7 @@ const requestListener = function (req, res) {
   } else {
     res.setHeader('Content-Type', 'html');
     res.writeHead(200);
-    res.end(readData('src/server/util/mainPage.html'));
+    res.end(readData('./util/mainPage.html'));
   }
 };
 
