@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+
 function delayPage() {
   var numberOfSecs = document.getElementById('numberOfSecs').value;
   var url = `http://localhost:8000/delay/${numberOfSecs}`;
@@ -70,16 +71,17 @@ const statusCodes = {
   510: 'Not Extended',
   511: 'Network Authentication Required'
 };
+//console.log((myVar.STATUS_CODES));
 
-const numberDropdown = document.getElementById('numberDropdown');
+const allStatusCodes = document.getElementById('allStatusCodes');
 for (let value in statusCodes) {
   const option = document.createElement('option');
   option.value = value;
   option.text = value;
-  numberDropdown.appendChild(option);
+  allStatusCodes.appendChild(option);
 }
 function searchCode() {
-  var numberDropdown = document.getElementById('numberDropdown').value;
-  var url = `http://localhost:8000/status_code/${numberDropdown}`;
+  var allStatusCodes = document.getElementById('allStatusCodes').value;
+  var url = `http://localhost:8000/status_code/${allStatusCodes}`;
   window.location.href = url;
 }

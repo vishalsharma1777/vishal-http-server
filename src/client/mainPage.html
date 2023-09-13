@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTTP DRILL</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="/mainPage.css"
+    />
+    
+  </head>
+  <body>
+    <h1>HTTP Drills I</h1>
+    <a href="http://localhost:8000/html"><button>HTML page</button></a></br>
+    <a href="http://localhost:8000/json"><button>JSON page</button></a></br>
+    <a href="http://localhost:8000/uuid"><button>UUID page</button></a></br>
+
+
+    <label for="allStatusCodes">Code whose response you want to know:</label>
+    <select id="allStatusCodes">
+      <option value="" disabled selected>Select a Status Code</option>
+    </select>
+    <button onclick="searchCode()">Check Response</button>
+  </br>
+
+  <label for="allStatusCodes">Seconds you want to wait for response:</label>
+    <div><input type="text" id="numberOfSecs" placeholder="value in secs"/></div>
+    <button onclick="delayPage()">Delay page</button>
+</br>
+<script src="mainPage.js" type="text/javascript" ></script>
+   
+  </body>
+</html>

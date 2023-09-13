@@ -1,70 +1,59 @@
+const express = require('express');
+const path = require('path');
 const http = require('http');
 const { v4: uuidv4 } = require('uuid');
-const readData = require('./util/readData');
-const host = 'localhost';
+const app = express();
 const port = 8000;
+app.use(express.static(path.join(__dirname, '../../public')));
 
-const requestListener = function (req, res) {
-  const urlByParts = req.url.split('/');
-  //FOR HTML
-  if (req.url === '/html') {
-    res.setHeader('Content-Type', 'text/html');
-    res.writeHead(200);
-    res.end(readData('src/client/index.html'));
-  }
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/mainPage.html'));
+});
 
-  //FOR JSON
-  else if (req.url === '/json') {
-    res.setHeader('Content-Type', 'json');
-    res.writeHead(200);
-    res.end(readData('src/client/index.json'));
-  }
+app.get('/html', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/index.html'));
+});
 
-  //FOR UUID
-  else if (req.url === '/uuid') {
-    res.setHeader('Content-Type', 'text');
-    res.writeHead(200);
-    const newId = uuidv4();
-    const uuidAnswer = { uuid: newId };
-    res.end(JSON.stringify(uuidAnswer));
-  }
+app.get('/json', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/index.json'));
+});
 
-  //statusCode
-  else if (urlByParts[1] === `status_code`) {
-    res.setHeader('Content-Type', 'text');
-    res.writeHead(200);
-    const statusCodeMessage = http.STATUS_CODES[urlByParts[2]];
-    if (!urlByParts[2]) {
-      res.end('ENTER A CODE WHOSE RESPONSE YOU WANT TO SEE');
-    } else if (http.STATUS_CODES[urlByParts[2]]) {
-      res.end(statusCodeMessage);
-    } else {
-      res.end('ENTER A VALID CODE');
-    }
-  }
+app.get('/uuid', (req, res) => {
+  const newId = uuidv4();
+  const uuidAnswer = { uuid: newId };
+  res.send(JSON.stringify(uuidAnswer));
+});
 
-  //delayCode
-  else if (urlByParts[1] === `delay`) {
-    res.setHeader('Content-Type', 'text');
-    res.writeHead(200);
-    if (!urlByParts[2]) {
-      res.end('ENTER A TIME FOR DELAY IN URL');
-    } else {
-      setTimeout(
-        () => {
-          res.end(http.STATUS_CODES[200]);
-        },
-        Number(urlByParts[2]) * 1000
-      );
-    }
+app.get('/status_code/:code', (req, res) => {
+  const codex = req.params.code;
+  const statusCodeMessage = http.STATUS_CODES[codex];
+  if (!codex) {
+    res.send('ENTER A CODE WHOSE RESPONSE YOU WANT TO SEE');
+  } else if (http.STATUS_CODES[codex]) {
+    res.send(statusCodeMessage);
   } else {
-    res.setHeader('Content-Type', 'html');
-    res.writeHead(200);
-    res.end(readData('src/server/util/mainPage.html'));
+    res.send('ENTER A VALID CODE');
   }
-};
+});
 
-const server = http.createServer(requestListener);
-server.listen(port, host, () => {
-  console.log(`Server is running on http://${host}:${port}`);
+app.get('/delay/:delay', (req, res) => {
+  const delayInShowing = req.params.delay;
+  if (!delayInShowing) {
+    res.end('ENTER A TIME FOR DELAY IN URL');
+  } else {
+    setTimeout(
+      () => {
+        res.sendStatus(200);
+      },
+      Number(delayInShowing) * 1000
+    );
+  }
+});
+
+app.get('*', (req, res) => {
+  res.sendStatus(400);
+});
+
+app.listen(port, () => {
+  console.log('Server started at http://localhost:' + port);
 });
