@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const http = require('http');
+const statusCodes = http.STATUS_CODES;
 const { v4: uuidv4 } = require('uuid');
 const app = express();
 const port = 8000;
@@ -26,13 +27,12 @@ app.get('/uuid', (req, res) => {
 
 app.get('/status_code/:code', (req, res) => {
   const codex = req.params.code;
-  const statusCodeMessage = http.STATUS_CODES[codex];
   if (!codex) {
     res.send('ENTER A CODE WHOSE RESPONSE YOU WANT TO SEE');
-  } else if (http.STATUS_CODES[codex]) {
-    res.send(statusCodeMessage);
+  } else if (statusCodes[codex]) {
+    res.sendStatus(codex);
   } else {
-    res.send('ENTER A VALID CODE');
+    res.sendStatus(400);
   }
 });
 
